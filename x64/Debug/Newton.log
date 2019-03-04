@@ -1,6 +1,12 @@
 ﻿  main.cpp
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(21): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(22): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(33): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(34): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
   Newton.vcxproj -> C:\Users\user.DESKTOP-FUUVFRH\Desktop\Newton\x64\Debug\Newton.exe
