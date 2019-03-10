@@ -7,6 +7,7 @@ using namespace cv;
 bool shutdown = false;
 const int fps = 10;
 int recordingTime = 10;			// in seconds
+int replayCount = 2;			// # of replays during playback
 
 string filename_0 = "output_0.avi";
 string filename_1 = "output_1.avi";
@@ -102,6 +103,7 @@ void streamcapture(Mat frame_0, Mat frame_1)
 // PLAYBACK
 void playback(Mat frame_0, Mat frame_1)
 {
+	int playbackLoop = 0;
 	double playbackCount = 0;
 	cout << " PLAYBACK START" << endl;
 
@@ -123,6 +125,14 @@ void playback(Mat frame_0, Mat frame_1)
 			playbackCount = 0;
 			file_0.set(CAP_PROP_POS_AVI_RATIO, 0);
 			file_1.set(CAP_PROP_POS_AVI_RATIO, 0);
+			
+			playbackLoop++;
+			if (playbackLoop > replayCount)
+			{
+				playbackLoop = 0;
+				playbackCount = -1;
+				cout << " RESTARTING MAIN PROGRAM" << endl;
+			}
 			cout << " PLAYBACK LOOPED" << endl;
 		}
 
