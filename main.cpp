@@ -1,4 +1,5 @@
 #include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 #include <iostream>
 
 using namespace std;
@@ -9,23 +10,36 @@ const int fps = 10;
 int recordingTime = 10;			// in seconds
 int replayCount = 2;			// # of replays during playback
 
-string filename_0 = "output_0.avi";
-string filename_1 = "output_1.avi";
+string bgName = " Background Window";
+string frameName_0 = "Front";
+string frameName_1 = "Side";
+
+string filename_0 = "output_front.avi";
+string filename_1 = "output_side.avi";
 
 void streamcapture(Mat, Mat);	// streams video and saves into an .avi
 void playback(Mat, Mat);		// plays back saved .avi
 
 int main()
 {
+	// create background
+	Mat bg(200, 200, CV_8UC3, Scalar(150, 150, 150));
+	namedWindow(bgName, WINDOW_NORMAL);
+	setWindowProperty(bgName, WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN);
+	imshow(bgName, bg);
+	bg.setTo(Scalar(0, 0, 200));
+
 	// create frame
 	Mat frame_0;
 	Mat frame_1;
-	
+
 	do
 	{
 		streamcapture(frame_0, frame_1);
 		playback(frame_0, frame_1);
 	} while (shutdown == false);
+
+	return 0;
 }
 
 // STREAM CAPTURE
@@ -61,8 +75,8 @@ void streamcapture(Mat frame_0, Mat frame_1)
 		cam_1 >> frame_1;
 
 		// display frame
-		imshow("Cam 0", frame_0);
-		imshow("Cam 1", frame_1);
+		imshow(frameName_0, frame_0);
+		imshow(frameName_1, frame_1);
 
 		// RECORD
 		if (recording == true)
@@ -83,7 +97,7 @@ void streamcapture(Mat frame_0, Mat frame_1)
 
 		// wait for keypress to exit
 		int c = waitKey(40);							// wait 40 milliseconds
-		if (27 == char(c)) { break; }					// exit loop if user pressed "esc" key
+		if (27 == char(c)) { shutdown = true; break; }					// exit loop if user pressed "esc" key
 		if (recording == false && (114 == char(c) || 82 == char(c)))	// wait for keypress to record
 		{
 			recording = true;
@@ -103,6 +117,8 @@ void streamcapture(Mat frame_0, Mat frame_1)
 // PLAYBACK
 void playback(Mat frame_0, Mat frame_1)
 {
+	if (shutdown == true) { return; }
+	
 	int playbackLoop = 0;
 	double playbackCount = 0;
 	cout << " PLAYBACK START" << endl;
@@ -141,12 +157,12 @@ void playback(Mat frame_0, Mat frame_1)
 		file_1 >> frame_1;
 
 		// display frame
-		imshow("Cam 0", frame_0);
-		imshow("Cam 1", frame_1);
+		imshow(frameName_0, frame_0);
+		imshow(frameName_1, frame_1);
 
 		// wait for keypress to exit
 		int c = waitKey(40);					// wait 40 milliseconds
-		if (27 == char(c)) { break; }			// exit loop if user pressed "esc" key
+		if (27 == char(c)) { shutdown = true; break; }		// exit loop if user pressed "esc" key
 		if (114 == char(c) || 82 == char(c))	// wait for keypress to record
 		{
 			playbackCount = -1;
