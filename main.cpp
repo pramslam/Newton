@@ -8,7 +8,7 @@ using namespace cv;
 bool shutdown = false;
 const int fps = 10;
 int recordingTime = 10;			// in seconds
-int replayCount = 2;			// # of replays during playback
+int replayCount = 1;			// # of replays during playback
 
 string bgName = " Background Window";
 string frameName_0 = "Front";
@@ -23,7 +23,7 @@ void playback(Mat, Mat);		// plays back saved .avi
 int main()
 {
 	// create background
-	Mat bg(200, 200, CV_8UC3, Scalar(150, 150, 150));
+	Mat bg(200, 200, CV_8UC3, Scalar(0, 0, 0));
 	namedWindow(bgName, WINDOW_NORMAL);
 	setWindowProperty(bgName, WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN);
 	imshow(bgName, bg);
@@ -37,6 +37,9 @@ int main()
 	Mat frame_1;
 	namedWindow(frameName_1);
 	moveWindow(frameName_1, 700, 100);
+
+	Mat text(0, 0, CV_8UC1);
+	putText(text, "JUMP!", Point(50, 50), FONT_HERSHEY_COMPLEX, 1, Scalar(150));
 
 	do
 	{
@@ -125,7 +128,7 @@ void playback(Mat frame_0, Mat frame_1)
 	if (shutdown == true) { return; }
 	
 	int playbackLoop = 0;
-	double playbackCount = 0;
+	int playbackCount = 0;
 	cout << " PLAYBACK START" << endl;
 
 	// initialize and allocate memory to load the video stream from camera
@@ -146,7 +149,7 @@ void playback(Mat frame_0, Mat frame_1)
 			playbackCount = 0;
 			file_0.set(CAP_PROP_POS_AVI_RATIO, 0);
 			file_1.set(CAP_PROP_POS_AVI_RATIO, 0);
-			
+
 			playbackLoop++;
 			if (playbackLoop > replayCount)
 			{
@@ -164,6 +167,9 @@ void playback(Mat frame_0, Mat frame_1)
 		// display frame
 		imshow(frameName_0, frame_0);
 		imshow(frameName_1, frame_1);
+
+		// slow motion, after second playback
+		if (playbackLoop >= 1) { waitKey(80); }
 
 		// wait for keypress to exit
 		int c = waitKey(40);					// wait 40 milliseconds
