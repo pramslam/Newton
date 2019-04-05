@@ -29,9 +29,14 @@ int main()
 	imshow(bgName, bg);
 	bg.setTo(Scalar(0, 0, 200));
 
-	// create frame
+	// create windows and position them
 	Mat frame_0;
+	namedWindow(frameName_0);
+	moveWindow(frameName_0, 0, 100);
+
 	Mat frame_1;
+	namedWindow(frameName_1);
+	moveWindow(frameName_1, 700, 100);
 
 	do
 	{

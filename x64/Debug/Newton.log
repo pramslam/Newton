@@ -1,10 +1,10 @@
 ﻿  main.cpp
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(68): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(73): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
           with
           [
               _Tp=int
           ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(69): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(74): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
           with
           [
               _Tp=int
