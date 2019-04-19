@@ -11,25 +11,34 @@ int recordingTime = 10;			// in seconds
 int replayCount = 1;			// # of replays during playback
 
 string bgName = "Background Window";
+string frameDisplayName = "Display";
 string frameName_0 = "Front";
 string frameName_1 = "Side";
 
 string filename_0 = "output_front.avi";
 string filename_1 = "output_side.avi";
 
-void streamcapture(Mat, Mat);	// streams video and saves into an .avi
-void playback(Mat, Mat);		// plays back saved .avi
+int main();
 
+void streamcapture(Mat, Mat, Mat);	// streams video and saves into an .avi
+void playback(Mat, Mat);		// plays back saved .avi
+void clearDisplay(Mat);			// clears the display
 int main()
 {
 	// create background
-	Mat bg(512, 512, CV_8UC3, Scalar(0, 0, 0));
+	Mat bg(512, 512, CV_8UC3, Scalar(0));
 	namedWindow(bgName, WINDOW_NORMAL);
 	setWindowProperty(bgName, WND_PROP_FULLSCREEN, WINDOW_FULLSCREEN); 
-	putText(bg, "Newton JUMP!", Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(250, 250, 250), 1, LINE_AA, false);		// Draw Text Title
+	putText(bg, "Newton JUMP!", Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 255, 255), 2, LINE_AA, false);		// Draw Text Title
 	imshow(bgName, bg);
 
 	// create windows and position them
+	Mat frame_display(256, 512, CV_8UC3, Scalar(0));
+	namedWindow(frameDisplayName, WINDOW_NORMAL);
+	resizeWindow(frameDisplayName, 300, 100);
+	moveWindow(frameDisplayName, 515, 615);
+	imshow(frameDisplayName, frame_display);
+
 	Mat frame_0;
 	namedWindow(frameName_0);
 	moveWindow(frameName_0, 0, 100);
@@ -40,7 +49,8 @@ int main()
 
 	do
 	{
-		streamcapture(frame_0, frame_1);
+		clearDisplay(frame_display);
+		streamcapture(frame_0, frame_1, frame_display);
 		playback(frame_0, frame_1);
 	} while (shutdown == false);
 
@@ -48,7 +58,7 @@ int main()
 }
 
 // STREAM CAPTURE
-void streamcapture(Mat frame_0, Mat frame_1)
+void streamcapture(Mat frame_0, Mat frame_1, Mat frame_display)
 {
 	bool recording = false;
 	bool streaming = true;
@@ -85,30 +95,53 @@ void streamcapture(Mat frame_0, Mat frame_1)
 		// display countdown timer
 		if (countdown == true)
 		{
-			if (delayCount > 0 && delayCount < 20)
+			if (delayCount > 0 && delayCount < fps * 2)					// Get Ready
 			{
-				putText(frame_0, to_string(countdownTime), Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(200, 200, 250), 1, LINE_AA, false);
-				putText(frame_1, to_string(countdownTime), Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(200, 200, 250), 1, LINE_AA, false);
+				putText(frame_display, "Get Ready!", Point(70, 130), FONT_HERSHEY_COMPLEX, 2, Scalar(0, 0, 255), 3, LINE_AA, false);
+				imshow(frameDisplayName, frame_display);
 			}
-			else if (delayCount > 20 && delayCount < 40)
+			else if (delayCount > fps * 2 && delayCount < fps * 4)		// 3
+			{
+				countdownTime = 3;
+				frame_display = Scalar(0);
+				putText(frame_display, to_string(countdownTime), Point(220, 160), FONT_HERSHEY_COMPLEX, 5, Scalar(0, 0, 255), 3, LINE_AA, false);
+				imshow(frameDisplayName, frame_display);
+			}
+			else if (delayCount > fps * 4 && delayCount < fps * 6)		// 2
 			{
 				countdownTime = 2;
-				putText(frame_0, to_string(countdownTime), Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(200, 200, 250), 1, LINE_AA, false);
-				putText(frame_1, to_string(countdownTime), Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(200, 200, 250), 1, LINE_AA, false);
+				frame_display = Scalar(0);
+				putText(frame_display, to_string(countdownTime), Point(220, 160), FONT_HERSHEY_COMPLEX, 5, Scalar(0, 0, 255), 3, LINE_AA, false);
+				imshow(frameDisplayName, frame_display);
 			}
-			else if (delayCount > 40 && delayCount < 60)
+			else if (delayCount > fps * 6 && delayCount < fps * 8)		// 1
 			{
 				countdownTime = 1;
-				putText(frame_0, to_string(countdownTime), Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(200, 200, 250), 1, LINE_AA, false);
-				putText(frame_1, to_string(countdownTime), Point(10, 50), FONT_HERSHEY_COMPLEX, 2, Scalar(200, 200, 250), 1, LINE_AA, false);
+				frame_display = Scalar(0);
+				putText(frame_display, to_string(countdownTime), Point(220, 160), FONT_HERSHEY_COMPLEX, 5, Scalar(0, 0, 255), 3, LINE_AA, false);
+				imshow(frameDisplayName, frame_display);
 			}
-			else if (delayCount >= 60)
+			else if (delayCount > fps * 8 && delayCount < fps * 10)		// JUMP!
 			{
+				// start recording, draw start text
+				recording = true;
+				countdownTime = 0;
+				frame_display = Scalar(0);
+				putText(frame_display, "JUMP!", Point(25, 170), FONT_HERSHEY_COMPLEX, 5, Scalar(0, 0, 255), 3, LINE_AA, false);
+				imshow(frameDisplayName, frame_display);
+			}
+			else if (delayCount >= fps * 12)
+			{
+				frame_display = Scalar(0);
+				putText(frame_display, "600N", Point(20, 170), FONT_HERSHEY_COMPLEX, 5, Scalar(0, 0, 255), 3, LINE_AA, false);
+				imshow(frameDisplayName, frame_display);
+			
+				// cleanup, reset flags
 				delayCount = -1;
 				countdownTime = 3;
 				countdown = false;
-				recording = true;
 			}
+	
 			delayCount++;
 		}
 		
@@ -117,9 +150,6 @@ void streamcapture(Mat frame_0, Mat frame_1)
 		{
 			circle(frame_0, Point(20, 20), 3, Scalar(0, 0, 255), 5, LINE_AA, 0);
 			circle(frame_1, Point(20, 20), 3, Scalar(0, 0, 255), 5, LINE_AA, 0);
-			//putText(frame_0, "JUMP!", Point(frameWidth_0 / 2, 40), FONT_HERSHEY_COMPLEX, 1, Scalar(0, 0, 255), 3, LINE_AA, false);		// draw Title
-			//putText(frame_1, "JUMP!", Point(frameWidth_0 / 2, 40), FONT_HERSHEY_COMPLEX, 1, Scalar(0, 0, 255), 3, LINE_AA, false);		// draw Title
-
 		}
 
 		// display frame
@@ -145,12 +175,11 @@ void streamcapture(Mat frame_0, Mat frame_1)
 		}
 
 		// wait for keypress to exit
-		int c = waitKey(40);							// wait 40 milliseconds
+		int c = waitKey(40);											// wait 40 milliseconds
 		if (27 == char(c)) { shutdown = true; break; }					// exit loop if user pressed "esc" key
 		if (recording == false && (114 == char(c) || 82 == char(c)))	// wait for keypress to record
 		{
 			countdown = true;
-			//recording = true;
 			cout << " START RECORDING" << endl;
 		}
 	} while (streaming == true);
@@ -207,8 +236,8 @@ void playback(Mat frame_0, Mat frame_1)
 		file_1 >> frame_1;
 
 		// draw playback indicator
-		circle(frame_0, Point(20, 20), 3, Scalar(0, 255, 0), 6, LINE_AA, 0);
-		circle(frame_1, Point(20, 20), 3, Scalar(0, 255, 0), 6, LINE_AA, 0);
+		circle(frame_0, Point(20, 20), 4, Scalar(0, 255, 0), 5, LINE_AA, 0);
+		circle(frame_1, Point(20, 20), 4, Scalar(0, 255, 0), 5, LINE_AA, 0);
 
 		// display frame
 		imshow(frameName_0, frame_0);
@@ -218,9 +247,9 @@ void playback(Mat frame_0, Mat frame_1)
 		if (playbackLoop >= 1) { waitKey(80); }
 
 		// wait for keypress to exit
-		int c = waitKey(40);					// wait 40 milliseconds
+		int c = waitKey(40);								// wait 40 milliseconds
 		if (27 == char(c)) { shutdown = true; break; }		// exit loop if user pressed "esc" key
-		if (114 == char(c) || 82 == char(c))	// wait for keypress to record
+		if (114 == char(c) || 82 == char(c))				// wait for keypress to record
 		{
 			playbackCount = -1;
 			cout << " RESTARTING..." << endl;
@@ -233,3 +262,8 @@ void playback(Mat frame_0, Mat frame_1)
 	cout << " FILES RELEASED" << endl;
 }
 
+void clearDisplay(Mat frame_display)
+{
+	frame_display = Scalar(0);
+	imshow(frameDisplayName, frame_display);
+}
