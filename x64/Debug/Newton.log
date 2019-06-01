@@ -1,54 +1,14 @@
 ﻿  main.cpp
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(104): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(115): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
           with
           [
               _Tp=int
           ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(105): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(116): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
           with
           [
               _Tp=int
           ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(108): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(121): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(122): warning C4305: 'initializing': truncation from 'double' to 'float'
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(127): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(134): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(141): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(148): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(157): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(250): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
-c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(256): warning C4244: 'argument': conversion from 'double' to '_Tp', possible loss of data
-          with
-          [
-              _Tp=int
-          ]
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(133): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\user.desktop-fuuvfrh\desktop\newton\main.cpp(134): warning C4305: 'initializing': truncation from 'double' to 'float'
   Newton.vcxproj -> C:\Users\user.DESKTOP-FUUVFRH\Desktop\Newton\x64\Debug\Newton.exe

@@ -26,16 +26,26 @@ double frameDisplayHeight;
 
 string bgName = "Background Window";
 string frameDisplayName = " ";
-string frameName_0 = "Front";
-string frameName_1 = "Side";
+string frameName_0 = "1";
+string frameName_1 = "2";
 
-string filename_0 = "output_front.avi";
-string filename_1 = "output_side.avi";
+string filename_0 = "output_1.avi";
+string filename_1 = "output_2.avi";
+
+string text_intro = "frame_display_intro.png";
+string text_ready = "frame_display_ready.png";
+string text_3 = "frame_display_3.png";
+string text_2 = "frame_display_2.png";
+string text_1 = "frame_display_1.png";
+string text_jump = "frame_display_jump.png";
+string text_replay = "frame_display_replay.png";
+string text_slowmotionreplay = "frame_display_slowmotionreplay.png";
 
 int main();
 void StreamCapture(Mat, Mat, Mat);		// streams video and saves into an .avi
 void Playback(Mat, Mat, Mat);			// plays back saved .avi
 void ClearDisplay(Mat);					// clears the display
+void ClearOutput();
 
 int main()
 {
@@ -66,6 +76,7 @@ int main()
 		ClearDisplay(frame_display);
 		StreamCapture(frame_0, frame_1, frame_display);
 		Playback(frame_0, frame_1, frame_display);
+		ClearOutput();
 	} while (shutdown == false);
 
 	return 0;
@@ -105,7 +116,8 @@ void StreamCapture(Mat frame_0, Mat frame_1, Mat frame_display)
 	VideoWriter output_1(filename_1, VideoWriter::fourcc('M', 'J', 'P', 'G'), fps, Size(frameWidth_1, frameHeight_1));
 
 	// Intro text
-	putText(frame_display, "PUSH BUTTON TO START", Point(frameDisplayWidth / 9.5, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
+	frame_display = imread(text_intro);
+	//putText(frame_display, "PUSH BUTTON TO START", Point(frameDisplayWidth / 9.5, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
 	imshow(frameDisplayName, frame_display);
 
 	do
@@ -124,28 +136,32 @@ void StreamCapture(Mat frame_0, Mat frame_1, Mat frame_display)
 			if (delayCount > 0 && delayCount < fps * 2)					// Get Ready
 			{
 				frame_display = Scalar(0);
-				putText(frame_display, "READY?", Point(frameDisplayWidth / 2.6, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
+				frame_display = imread(text_ready);
+				//putText(frame_display, "READY?", Point(frameDisplayWidth / 2.6, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
 				imshow(frameDisplayName, frame_display);
 			}
 			else if (delayCount > fps * 2 && delayCount < fps * 4)		// 3
 			{
 				countdownTime = 3;
 				frame_display = Scalar(0);
-				putText(frame_display, to_string(countdownTime), Point(frameDisplayWidth / numOffsetW, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
+				frame_display = imread(text_3);
+				//putText(frame_display, to_string(countdownTime), Point(frameDisplayWidth / numOffsetW, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
 				imshow(frameDisplayName, frame_display);
 			}
 			else if (delayCount > fps * 4 && delayCount < fps * 6)		// 2
 			{
 				countdownTime = 2;
 				frame_display = Scalar(0);
-				putText(frame_display, to_string(countdownTime), Point(frameDisplayWidth / numOffsetW, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
+				frame_display = imread(text_2);
+				//putText(frame_display, to_string(countdownTime), Point(frameDisplayWidth / numOffsetW, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
 				imshow(frameDisplayName, frame_display);
 			}
 			else if (delayCount > fps * 6 && delayCount < fps * 8)		// 1
 			{
 				countdownTime = 1;
 				frame_display = Scalar(0);
-				putText(frame_display, to_string(countdownTime), Point(frameDisplayWidth / numOffsetW, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
+				frame_display = imread(text_1);
+				//putText(frame_display, to_string(countdownTime), Point(frameDisplayWidth / numOffsetW, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
 				imshow(frameDisplayName, frame_display);
 			}
 			else if (delayCount > fps * 8 && delayCount < fps * 10)		// JUMP!
@@ -154,7 +170,8 @@ void StreamCapture(Mat frame_0, Mat frame_1, Mat frame_display)
 				recording = true;
 				countdownTime = 0;
 				frame_display = Scalar(0);
-				putText(frame_display, "JUMP!!!", Point(frameDisplayWidth / 4, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
+				frame_display = imread(text_jump);
+				//putText(frame_display, "JUMP!!!", Point(frameDisplayWidth / 4, frameDisplayHeight / numOffsetH), FONT_HERSHEY_COMPLEX, 5, Scalar(255, 0, 0), 3, LINE_AA, false);
 				imshow(frameDisplayName, frame_display);
 			}
 			else if (delayCount >= fps * 12)
@@ -247,13 +264,15 @@ void Playback(Mat frame_0, Mat frame_1, Mat frame_display)
 		if (playbackLoop == 0)
 		{
 			// Replay text display
-			putText(frame_display, "REPLAY", Point(frameDisplayWidth / 2.6, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
+			frame_display = imread(text_replay);
+			//putText(frame_display, "REPLAY", Point(frameDisplayWidth / 2.6, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
 			imshow(frameDisplayName, frame_display);
 		}
 		else if (playbackLoop >= 1)
 		{
 			// Slow-Mo text display
-			putText(frame_display, "SLOW MOTION REPLAY", Point(frameDisplayWidth / 8, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
+			frame_display = imread(text_slowmotionreplay);
+			//putText(frame_display, "SLOW MOTION REPLAY", Point(frameDisplayWidth / 8, frameDisplayHeight / 1.6), FONT_HERSHEY_COMPLEX, 2, Scalar(255, 0, 0), 3, LINE_AA, false);
 			imshow(frameDisplayName, frame_display);
 		}
 
@@ -312,4 +331,18 @@ void ClearDisplay(Mat frame_display)
 {
 	frame_display = Scalar(0);
 	imshow(frameDisplayName, frame_display);
+}
+
+// clears output from memory
+void ClearOutput()
+{
+	if (remove("output_1.avi") != 0)
+		cout << "Error clearing file" << endl;
+	else
+		cout << "File 1 successfully cleared" << endl;
+
+	if (remove("output_2.avi") != 0)
+		cout << "Error clearing file" << endl;
+	else
+		cout << "File 2 successfully cleared" << endl;
 }
