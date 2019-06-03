@@ -1,7 +1,7 @@
 // Created by David Lo 2018-2019
 // for
 // Eugene Science Center "Jump" Exhibit
-// Project dates 12/18 - 
+// Project dates 12/18 - 6/2/19
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
@@ -45,7 +45,7 @@ int main();
 void StreamCapture(Mat, Mat, Mat);		// streams video and saves into an .avi
 void Playback(Mat, Mat, Mat);			// plays back saved .avi
 void ClearDisplay(Mat);					// clears the display
-void ClearOutput();
+void ClearOutput();						// clears the output
 
 int main()
 {
